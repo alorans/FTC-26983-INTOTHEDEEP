@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.tuning.util.TuningData;
 import java.util.List;
 
 @TeleOp(group = "TriSwerve")
-public class SwerveModuleOffsetTuner extends CommandOpMode {
+public class TriSwerveModuleOffsetTuner extends CommandOpMode {
     @Register
     private TriRobot robot;
 

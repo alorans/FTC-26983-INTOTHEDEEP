@@ -14,9 +14,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.TriSwerve.TriRobot;
 import org.firstinspires.ftc.teamcode.tuning.util.TuningData;
 
-@TeleOp
+@TeleOp(group = "TriSwerve")
 @JoosConfig
-public class SwerveModuleTuningTest extends CommandOpMode {
+public class TriSwerveModuleTuningTest extends CommandOpMode {
     @Register
     private TriRobot robot;
     public static Angle startAngle = Angle.deg(0);

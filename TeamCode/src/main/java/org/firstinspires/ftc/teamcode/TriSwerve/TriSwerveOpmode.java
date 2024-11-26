@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.TriSwerve;
 
+import com.amarcolini.joos.command.Command;
 import com.amarcolini.joos.command.CommandOpMode;
 import com.amarcolini.joos.geometry.Angle;
 import com.amarcolini.joos.geometry.Pose2d;

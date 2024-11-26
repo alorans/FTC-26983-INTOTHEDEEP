@@ -19,7 +19,7 @@ import com.amarcolini.joos.trajectory.constraints.SwerveConstraints;
 import com.amarcolini.joos.trajectory.constraints.TrajectoryConstraints;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.SampleSwerveModule;
+
 import org.firstinspires.ftc.teamcode.tuning.util.DashboardTrajectoryCommand;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 public class TriSwerveDrive extends AbstractSwerveDrive implements DriveTrajectoryFollower {
     //TODO Update swerve trackwidth/wheelbase to match your drive configuration.
     private final List<Vector2d> modulePositions;
-    private final List<SampleSwerveModule> modules;
+    private final List<TriSwerveModule> modules;
     private final MotorGroup motorGroup;
 
     @NotNull
@@ -53,9 +53,9 @@ public class TriSwerveDrive extends AbstractSwerveDrive implements DriveTrajecto
     );
 
     //TODO Tune swerve module offsets.
-    public static Angle frontOffset = Angle.deg(0);
-    public static Angle backLeftOffset = Angle.deg(0);
-    public static Angle backRightOffset = Angle.deg(0);
+    public static Angle frontOffset = Angle.deg(203.455);
+    public static Angle backLeftOffset = Angle.deg(190.909);
+    public static Angle backRightOffset = Angle.deg(141.709);
 
     public static final PIDCoefficients axialCoeffs = new PIDCoefficients();
     public static final PIDCoefficients lateralCoeffs = new PIDCoefficients();
@@ -70,19 +70,19 @@ public class TriSwerveDrive extends AbstractSwerveDrive implements DriveTrajecto
     public TriSwerveDrive(HardwareMap hMap) {
         this(
                 Arrays.asList(
-                        new SampleSwerveModule(
+                        new TriSwerveModule(
                                 hMap,
                                 "front_motor",
                                 "front_servo",
                                 "front_angle", frontOffset
                         ),
-                        new SampleSwerveModule(
+                        new TriSwerveModule(
                                 hMap,
                                 "back_left_motor",
                                 "back_left_servo",
                                 "back_left_angle", backLeftOffset
                         ),
-                        new SampleSwerveModule(
+                        new TriSwerveModule(
                                 hMap,
                                 "back_right_motor",
                                 "back_right_servo",
@@ -102,7 +102,7 @@ public class TriSwerveDrive extends AbstractSwerveDrive implements DriveTrajecto
     }
 
     public TriSwerveDrive(
-            @NotNull List<SampleSwerveModule> modules,
+            @NotNull List<TriSwerveModule> modules,
             @NotNull List<Vector2d> modulePositions
     ) {
         // super(front, backLeft, backRight, trackWidth, wheelBase);
