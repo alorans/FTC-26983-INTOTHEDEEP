@@ -17,12 +17,12 @@ import org.jetbrains.annotations.NotNull;
 public class TriSwerveModule extends PIDSwerveModule {
     public static final PIDCoefficients coeffs = new PIDCoefficients(0.7, 0.0, 0.02);
     public static double servoPositionTolerance = 0.05;
-    public final AngleSensor moduleOrientationSensor;
+    public final AxonAngleSensor moduleOrientationSensor;
     public final Motor motor;
     public final CRServo servo;
 
     public TriSwerveModule(
-            AngleSensor moduleOrientationSensor,
+            AxonAngleSensor moduleOrientationSensor,
             Motor motor,
             CRServo servo
     ) {
