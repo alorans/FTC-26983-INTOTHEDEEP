@@ -15,8 +15,8 @@ import java.util.List;
 public class TriRobot extends Robot {
     public final IMUAngleSensor headingSensor = new IMUAngleSensor(
             hMap, "imu",
-            RevHubOrientationOnRobot.LogoFacingDirection.UP, // TODO: Set these to what they are on your robot
-            RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
+            RevHubOrientationOnRobot.LogoFacingDirection.LEFT, // TODO: Set these to what they are on your robot
+            RevHubOrientationOnRobot.UsbFacingDirection.UP
     );
 
     //TODO: Uncomment if using 3-wheel odometry
@@ -28,7 +28,7 @@ public class TriRobot extends Robot {
 //    public static double perpendicularOffset = 1.0;
 
     //TODO: Change to your specific drivetrain
-    public final TriSwerveDrive drive = new TriSwerveDrive(hMap);
+    public final TriSwerveDrive drive = new TriSwerveDrive(hMap, headingSensor);
 
     @Override
     public void init() {

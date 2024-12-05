@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 @JoosConfig
 public class TriSwerveModule extends PIDSwerveModule {
-    public static final PIDCoefficients coeffs = new PIDCoefficients(0.7, 0.0, 0.02);
+    public static final PIDCoefficients coeffs = new PIDCoefficients(0.52, 0.0, 0.0);
     public static double servoPositionTolerance = 0.05;
     public final AxonAngleSensor moduleOrientationSensor;
     public final Motor motor;

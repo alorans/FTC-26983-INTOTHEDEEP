@@ -11,6 +11,7 @@ import com.amarcolini.joos.followers.TrajectoryFollower;
 import com.amarcolini.joos.geometry.Angle;
 import com.amarcolini.joos.geometry.Pose2d;
 import com.amarcolini.joos.geometry.Vector2d;
+import com.amarcolini.joos.hardware.IMUAngleSensor;
 import com.amarcolini.joos.hardware.MotorGroup;
 import com.amarcolini.joos.hardware.drive.DriveTrajectoryFollower;
 import com.amarcolini.joos.hardware.drive.FollowTrajectoryCommand;
@@ -53,9 +54,9 @@ public class TriSwerveDrive extends AbstractSwerveDrive implements DriveTrajecto
     );
 
     //TODO Tune swerve module offsets.
-    public static Angle frontOffset = Angle.deg(203.455);
-    public static Angle backLeftOffset = Angle.deg(190.909);
-    public static Angle backRightOffset = Angle.deg(141.709);
+    public static Angle frontOffset = Angle.deg(-24.4);
+    public static Angle backLeftOffset = Angle.deg(-38.8);
+    public static Angle backRightOffset = Angle.deg(-139.6);
 
     public static final PIDCoefficients axialCoeffs = new PIDCoefficients();
     public static final PIDCoefficients lateralCoeffs = new PIDCoefficients();
@@ -67,7 +68,7 @@ public class TriSwerveDrive extends AbstractSwerveDrive implements DriveTrajecto
     public static final DCMotorFeedforward feedforward = new DCMotorFeedforward();
     public static double distancePerTick = 1.0;
 
-    public TriSwerveDrive(HardwareMap hMap) {
+    public TriSwerveDrive(HardwareMap hMap, IMUAngleSensor externalHeadingSensor) {
         this(
                 Arrays.asList(
                         new TriSwerveModule(
@@ -93,20 +94,24 @@ public class TriSwerveDrive extends AbstractSwerveDrive implements DriveTrajecto
                         new Vector2d(7.487, 0.0),
                         new Vector2d(-4.316, 6.118),
                         new Vector2d(-4.597, -5.910)
-                )
+                ),
+                externalHeadingSensor
         );
         //TODO Reverse motors/servos/angle sensors like this:
-//        modules.get(0).motor.setReversed(true);
-//        modules.get(1).servo.setReversed(true);
-//        modules.get(2).moduleOrientationSensor.setReversed(true);
+        for (TriSwerveModule module : modules) {
+            module.servo.setReversed(true);
+        }
+        modules.get(0).motor.setReversed(true);
+        modules.get(1).motor.setReversed(true);
     }
 
     public TriSwerveDrive(
             @NotNull List<TriSwerveModule> modules,
-            @NotNull List<Vector2d> modulePositions
+            @NotNull List<Vector2d> modulePositions,
+            @NotNull IMUAngleSensor externalHeadingSensor
     ) {
         // super(front, backLeft, backRight, trackWidth, wheelBase);
-        super(modules, modulePositions);
+        super(modules, modulePositions, externalHeadingSensor);
         this.modules = modules;
         this.modulePositions = modulePositions;
         this.motorGroup = new MotorGroup(

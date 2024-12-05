@@ -64,8 +64,9 @@ public class TriSwerveModuleIndividualTest extends CommandOpMode {
         );
 
         // Print servo speed on telemetry
-        schedule(true, () ->
-            telem.addData("Measured servo power", triSwerve.servo.getPower())
-        );
+        schedule(true, () -> {
+            telem.addData("Measured servo power", triSwerve.servo.getPower());
+            telem.addData("Encoder angle", triSwerve.moduleOrientationSensor.getAngle());
+        });
     }
 }
