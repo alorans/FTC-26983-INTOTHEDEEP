@@ -8,6 +8,9 @@ import com.amarcolini.joos.hardware.drive.DriveComponent;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 
+import org.firstinspires.ftc.teamcode.OtherSubsystems.Pivot;
+import org.firstinspires.ftc.teamcode.OtherSubsystems.Slide;
+
 import java.util.List;
 
 //TODO: change all IDs to what they are in your robot configuration
@@ -29,10 +32,11 @@ public class TriRobot extends Robot {
 
     //TODO: Change to your specific drivetrain
     public final TriSwerveDrive drive = new TriSwerveDrive(hMap, headingSensor);
-
+    public final Pivot pivot = new Pivot(hMap, "pivot_motor", ()-> gamepad().p2.left_stick_y(), 0,0,0);
+    public final Slide slide = new Slide(hMap, "slide_motor", ()-> gamepad().p2.right_stick_y());
     @Override
     public void init() {
-        register(drive);
+        register(drive, pivot);
 
         /**
          * The `SwerveConstraints` variable in SampleSwerveDrive is primarily used in `SwerveLocalizer`

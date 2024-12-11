@@ -65,6 +65,7 @@ public class TriSwerveOpmode extends CommandOpMode {
             robot.drive.setDrivePower(drivePower);
 
             telem.drawRobot(robot.drive.getLocalizer().getPoseEstimate(), "blue");
+            telem.addData("FF: ", 10*robot.pivot.getCurrentPos());
         });
     }
 }
