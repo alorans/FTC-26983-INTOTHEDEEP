@@ -2,8 +2,11 @@ package org.firstinspires.ftc.teamcode.TriSwerve;
 
 import com.amarcolini.joos.command.Component;
 import com.amarcolini.joos.command.Robot;
+import com.amarcolini.joos.control.PIDCoefficients;
 import com.amarcolini.joos.dashboard.JoosConfig;
 import com.amarcolini.joos.hardware.IMUAngleSensor;
+import com.amarcolini.joos.hardware.Motor;
+import com.amarcolini.joos.hardware.Servo;
 import com.amarcolini.joos.hardware.drive.DriveComponent;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
@@ -27,12 +30,22 @@ public class TriRobot extends Robot {
 //    public static double parallelOffset = 1.0;
 //    public static double perpendicularOffset = 1.0;
 
-    //TODO: Change to your specific drivetrain
     public final TriSwerveDrive drive = new TriSwerveDrive(hMap, headingSensor);
+    public final ArmComponent arm = new ArmComponent(
+            new Motor(hMap, "slide_motor", Motor.Type.GOBILDA_312),
+            new Motor(hMap, "pivot_motor", Motor.Type.GOBILDA_60),
+            new PIDCoefficients(0.0, 0.0, 0.0), 0.2, 86.4,
+            new PIDCoefficients(0.0, 0.0, 0.0), 0.0
+    );
+    public final ClawComponent claw = new ClawComponent(
+            new Servo(hMap, "wrist_servo"),
+            new Servo(hMap, "hand_servo")
+    );
 
     @Override
     public void init() {
-        register(drive);
+        // Register components
+        register(drive, arm);
 
         /**
          * The `SwerveConstraints` variable in SampleSwerveDrive is primarily used in `SwerveLocalizer`

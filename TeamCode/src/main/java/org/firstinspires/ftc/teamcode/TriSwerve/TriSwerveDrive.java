@@ -12,6 +12,7 @@ import com.amarcolini.joos.geometry.Angle;
 import com.amarcolini.joos.geometry.Pose2d;
 import com.amarcolini.joos.geometry.Vector2d;
 import com.amarcolini.joos.hardware.IMUAngleSensor;
+import com.amarcolini.joos.hardware.Motor;
 import com.amarcolini.joos.hardware.MotorGroup;
 import com.amarcolini.joos.hardware.drive.DriveTrajectoryFollower;
 import com.amarcolini.joos.hardware.drive.FollowTrajectoryCommand;
@@ -54,8 +55,8 @@ public class TriSwerveDrive extends AbstractSwerveDrive implements DriveTrajecto
     );
 
     //TODO Tune swerve module offsets.
-    public static Angle frontOffset = Angle.deg(-24.4);
-    public static Angle backLeftOffset = Angle.deg(-38.8);
+    public static Angle frontOffset = Angle.deg(-110.0);
+    public static Angle backLeftOffset = Angle.deg(-218.8);
     public static Angle backRightOffset = Angle.deg(-139.6);
 
     public static final PIDCoefficients axialCoeffs = new PIDCoefficients();
@@ -97,12 +98,11 @@ public class TriSwerveDrive extends AbstractSwerveDrive implements DriveTrajecto
                 ),
                 externalHeadingSensor
         );
-        //TODO Reverse motors/servos/angle sensors like this:
+        // Swerve pod settings
         for (TriSwerveModule module : modules) {
             module.servo.setReversed(true);
+            module.motor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         }
-        modules.get(0).motor.setReversed(true);
-        modules.get(1).motor.setReversed(true);
     }
 
     public TriSwerveDrive(
@@ -119,6 +119,9 @@ public class TriSwerveDrive extends AbstractSwerveDrive implements DriveTrajecto
         );
         getMotors().setDistancePerTick(distancePerTick);
         getMotors().setFeedforward(feedforward);
+
+        // Added
+        //getMotors().setRunMode(Motor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.TriSwerve;
 
 import com.amarcolini.joos.control.PIDCoefficients;
+import com.amarcolini.joos.control.PIDController;
 import com.amarcolini.joos.dashboard.JoosConfig;
 import com.amarcolini.joos.drive.PIDSwerveModule;
 import com.amarcolini.joos.geometry.Angle;
@@ -30,6 +31,9 @@ public class TriSwerveModule extends PIDSwerveModule {
         this.moduleOrientationSensor = moduleOrientationSensor;
         this.motor = motor;
         this.servo = servo;
+
+        // Set PID settings
+        super.pidController.setTolerance(0.1);
     }
 
     public TriSwerveModule(
@@ -60,7 +64,9 @@ public class TriSwerveModule extends PIDSwerveModule {
 
     @Override
     public void setModulePower(double v) {
-        servo.setPower(v);
+        // Add 0.07 to power to overcome static friction
+        //v += v > 0 ? 0.03 : -0.03;
+        servo.setPower(super.pidController.isAtSetPoint() ? 0 : v);
     }
 
     @NotNull

@@ -1,16 +1,27 @@
 package org.firstinspires.ftc.teamcode.TriSwerve;
 
+import androidx.annotation.NonNull;
+
+import com.amarcolini.joos.command.BasicCommand;
 import com.amarcolini.joos.command.Command;
 import com.amarcolini.joos.command.CommandOpMode;
+import com.amarcolini.joos.command.Component;
+import com.amarcolini.joos.command.SelectCommand;
+import com.amarcolini.joos.command.TimeCommand;
 import com.amarcolini.joos.control.PIDCoefficients;
 import com.amarcolini.joos.control.PIDController;
+import com.amarcolini.joos.dashboard.JoosConfig;
 import com.amarcolini.joos.gamepad.Toggleable;
 import com.amarcolini.joos.geometry.Angle;
 import com.amarcolini.joos.geometry.Pose2d;
 import com.amarcolini.joos.geometry.Vector2d;
+import com.amarcolini.joos.util.NanoClock;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.SampleRobot;
+
+import java.sql.Array;
+import java.util.Set;
 
 @TeleOp(group = "TriSwerve")
 public class TriSwerveOpmode extends CommandOpMode {
@@ -18,10 +29,12 @@ public class TriSwerveOpmode extends CommandOpMode {
     private TriRobot robot;
 
     // Settings
-    private boolean fieldCentric = true;
+    private boolean fieldCentric = false;
     private boolean headingLock = false;
     public PIDCoefficients headingCoeffs = new PIDCoefficients(1.0, 0.0, 0.1);
     private final PIDController headingController = new PIDController(headingCoeffs);
+
+    private double armPos = 0.0;
 
     @Override
     public void preInit() {
@@ -35,9 +48,8 @@ public class TriSwerveOpmode extends CommandOpMode {
         // Map A and B buttons to settings
         map(gamepad().p1.a::isJustActivated, () -> fieldCentric = !fieldCentric);
         map(gamepad().p1.b::isJustActivated, () -> headingLock = !headingLock);
-
-        // Drive
-        schedule(true, () -> {
+        // Drivetrain command
+        Command.of(() -> {
             Vector2d leftStick = gamepad().p1.getLeftStick();
             Vector2d rightStick = gamepad().p1.getRightStick();
             Angle currentHeading = robot.headingSensor.getAngle();
@@ -64,7 +76,27 @@ public class TriSwerveOpmode extends CommandOpMode {
             }
             robot.drive.setDrivePower(drivePower);
 
+            // Use telemetry to draw robot on FTC Dashboard
             telem.drawRobot(robot.drive.getLocalizer().getPoseEstimate(), "blue");
-        });
+
+        // Set requirements, run forever, and schedule
+        }).requires(robot.drive).repeatForever().schedule();
+
+        // Arm assembly command
+        /*Command.of(() -> {
+            // Handle pivot
+            Vector2d leftStick = gamepad().p2.getLeftStick();
+            robot.arm.slideTarget += 1;
+
+            // Handle slide
+            Vector2d rightStick = gamepad().p2.getRightStick();
+            robot.arm.runSlide(rightStick.y);
+
+        // Set requirements, run forever, and schedule
+        }).requires(robot.arm).repeatForever().schedule();*/
+
+        map(gamepad().p2.dpad_up::isActive, () -> armPos += 2);
+        map(gamepad().p2.dpad_down::isJustActivated, () -> armPos -= 2);
+        Command.of(() -> robot.arm.setPivotTarget(armPos)).requires(robot.arm).repeatForever().schedule();
     }
 }
